@@ -1,0 +1,26 @@
+service: notes-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  environment:
+    APP_NAME: My Notes App
+    APP_STAGE: ${opt:stage,self:provider.stage}
+    SERVICE_NAME: Notes Service
+
+functions:
+  createNotes:
+    handler: handler.createNotes
+    events:
+      - http:
+          path: notes
+          method: post
+
+  getNoteById:
+    handler: handler.getNotesById
+    events:
+      - http:
+          path: notes/{id}
+          method: get
